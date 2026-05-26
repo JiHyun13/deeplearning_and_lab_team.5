@@ -1,4 +1,5 @@
-raw_data/
-data_ver1/
-data_ver2/
-``
+# 데이터
+data/Audio
+data/Transcript
+data/Video
+Raw.zip
