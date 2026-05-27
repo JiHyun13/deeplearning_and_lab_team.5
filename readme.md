@@ -114,4 +114,9 @@ with open('text_features_256(증강+동결6+earlystop).pkl', 'rb') as f:
 # 데이터 추출
 text_feats  = data['features']   # shape: (N, 256) torch.Tensor
 text_labels = data['labels']     # shape: (N,)
+```
 </details>
+
+--- 
+
+둘 다 사용해보려고 하는데 우선적으로 기본+조기종료 모델이 성능이 더 높으니 '기본+조기종료'로 일단 사용해주시면 될 것 같아요!
