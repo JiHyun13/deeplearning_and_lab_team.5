@@ -145,14 +145,14 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(basic+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_256.pkl'    
 
-![alt text](image.png)
+![alt text](C:\Users\user\Documents\50.2026\53.DL_실습\multimodal\output\error_faces.png)
 
 #### 피처 크기가 768 + text basic (output_768 폴더)
 VIDEO_PKL = 'data/video_features_768.pkl'
 TEXT_PKL  = 'data/text_features_768(basic+earlystop).pkl'
 AUDIO_PKL = 'data/audio_hubert_768.pkl'   
 
-![alt text](image-1.png)   
+![alt text](C:\Users\user\Documents\50.2026\53.DL_실습\multimodal\output_768\fusion_ablation.png)   
 
 
 #### 피처 크기가 768 + text 동결 (output_768 폴더)
