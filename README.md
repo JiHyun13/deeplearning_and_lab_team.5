@@ -145,7 +145,7 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(basic+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_origin.pkl'    
 
-[alt text](output_256_basic/fusion_ablation.png)
+![alt text](output_256_basic/fusion_ablation.png)
 
 ```
 === Test 결과 ===
@@ -167,7 +167,7 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(증강+동결6+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_origin.pkl'  
 
-[alt text](output_256_freeze/fusion_ablation.png)
+![alt text](output_256_freeze/fusion_ablation.png)
 
 ```
 === Test 결과 ===
@@ -235,7 +235,7 @@ VIDEO_PKL = 'data/video_features_768.pkl'
 TEXT_PKL  = 'data/text_features_768(basic+earlystop).pkl'
 AUDIO_PKL = 'data/audio_hubert_768.pkl'   
 
-[alt text](output_768_basic/fusion_ablation.png)
+![alt text](output_768_basic/fusion_ablation.png)
 
 
 ```
@@ -258,7 +258,8 @@ VIDEO_PKL = 'data/video_features_768.pkl'
 TEXT_PKL  = 'data/text_features_768(증강+동결6+earlystop).pkl'
 AUDIO_PKL = 'data/audio_hubert_768.pkl' 
 
-![alt text](C:\Users\user\Documents\50.2026\53.DL_실습\multimodal\output_768_freeze\fusion_ablation.png)
+![alt text](output_768_freeze\fusion_ablation.png)
+
 ```
 === Test 결과 ===
 Accuracy : 0.8545 (85.45%)
