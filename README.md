@@ -145,7 +145,7 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(basic+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_origin.pkl'    
 
-![alt text](output_256_basic/fusion_ablation.png)
+![alt text](output_256_basic\fusion_ablation.png)
 
 ```
 === Test 결과 ===
@@ -167,7 +167,7 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(증강+동결6+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_origin.pkl'  
 
-![alt text](output_256_freeze/fusion_ablation.png)
+![alt text](output_256_freeze\fusion_ablation.png)
 
 ```
 === Test 결과 ===
@@ -186,10 +186,10 @@ weighted avg       0.86      0.86      0.86       330
 
 
 #### (3) 피처 크기가 256 + text basic + audio 증강 (output_256_b_aug 폴더)
-VIDEO_PKL = 'data/video_features_256.pkl'
-TEXT_PKL  = 'data/text_features_256(basic+earlystop).pkl'
-AUDIO_PKL = 'data/audio_feat_hubert_aug.pkl'  
-
+VIDEO_PKL = 'data/video_features_256.pkl'   
+TEXT_PKL  = 'data/text_features_256(basic+earlystop).pkl'   
+AUDIO_PKL = 'data/audio_feat_hubert_aug.pkl'    
+ 
 ![alt text](output_256_b_aug/fusion_ablation.png)
 
 ```
@@ -209,11 +209,11 @@ weighted avg       0.88      0.88      0.88       330
 
 
 #### (4) 피처 크기가 256 + text 동결 + audio 증강 (output_256_f_aug 폴더)
-VIDEO_PKL = 'data/video_features_256.pkl'
-TEXT_PKL  = 'data/text_features_256(증강+동결6+earlystop).pkl'
-AUDIO_PKL = 'data/audio_feat_hubert_aug.pkl'  
+VIDEO_PKL = 'data/video_features_256.pkl'   
+TEXT_PKL  = 'data/text_features_256(증강+동결6+earlystop).pkl'   
+AUDIO_PKL = 'data/audio_feat_hubert_aug.pkl'     
 
-![alt text](output_256_f_aug/fusion_ablation.png)
+![alt text](output_256_f_aug\fusion_ablation.png)
 
 ```
 === Test 결과 ===
@@ -231,11 +231,11 @@ weighted avg       0.87      0.87      0.87       330
 ```
 
 #### (5) 피처 크기가 768 + text basic (output_768_basic 폴더)
-VIDEO_PKL = 'data/video_features_768.pkl'
-TEXT_PKL  = 'data/text_features_768(basic+earlystop).pkl'
-AUDIO_PKL = 'data/audio_hubert_768.pkl'   
+VIDEO_PKL = 'data/video_features_768.pkl'   
+TEXT_PKL  = 'data/text_features_768(basic+earlystop).pkl'   
+AUDIO_PKL = 'data/audio_hubert_768.pkl'      
 
-![alt text](output_768_basic/fusion_ablation.png)
+![alt text](output_768_basic\fusion_ablation.png)
 
 
 ```
@@ -254,9 +254,9 @@ weighted avg       0.89      0.89      0.89       330
 ```
 
 #### (6) 피처 크기가 768 + text 동결 (output_768_freeze 폴더)
-VIDEO_PKL = 'data/video_features_768.pkl'
-TEXT_PKL  = 'data/text_features_768(증강+동결6+earlystop).pkl'
-AUDIO_PKL = 'data/audio_hubert_768.pkl' 
+VIDEO_PKL = 'data/video_features_768.pkl'   
+TEXT_PKL  = 'data/text_features_768(증강+동결6+earlystop).pkl'   
+AUDIO_PKL = 'data/audio_hubert_768.pkl'    
 
 ![alt text](output_768_freeze\fusion_ablation.png)
 
