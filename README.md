@@ -145,21 +145,21 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(basic+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_origin.pkl'    
 
-![alt text](output_256_basic/fusion_ablation.png)
+![alt text](1.output_256_basic/fusion_training_curves.png)
 
 ```
 === Test 결과 ===
-Accuracy : 0.8697 (86.97%)
-Macro F1 : 0.8694
+Accuracy : 0.8788 (87.88%)
+Macro F1 : 0.8784
 
               precision    recall  f1-score   support
 
- Negative(0)       0.85      0.90      0.88       168
- Positive(1)       0.89      0.83      0.86       162
+ Negative(0)       0.86      0.92      0.89       168
+ Positive(1)       0.91      0.84      0.87       162
 
-    accuracy                           0.87       330
-   macro avg       0.87      0.87      0.87       330
-weighted avg       0.87      0.87      0.87       330
+    accuracy                           0.88       330
+   macro avg       0.88      0.88      0.88       330
+weighted avg       0.88      0.88      0.88       330
 ```
 
 #### (2) 피처 크기가 256 + text 동결 (output_256_freeze 폴더)
@@ -167,21 +167,21 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(증강+동결6+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_origin.pkl'  
 
-![alt text](output_256_freeze/fusion_ablation.png)
+![alt text](2.output_256_freeze/fusion_training_curves.png)
 
 ```
 === Test 결과 ===
-Accuracy : 0.8636 (86.36%)
-Macro F1 : 0.8636
+Accuracy : 0.8667 (86.67%)
+Macro F1 : 0.8665
 
               precision    recall  f1-score   support
 
- Negative(0)       0.86      0.87      0.87       168
- Positive(1)       0.86      0.86      0.86       162
+ Negative(0)       0.86      0.89      0.87       168
+ Positive(1)       0.88      0.85      0.86       162
 
-    accuracy                           0.86       330
-   macro avg       0.86      0.86      0.86       330
-weighted avg       0.86      0.86      0.86       330
+    accuracy                           0.87       330
+   macro avg       0.87      0.87      0.87       330
+weighted avg       0.87      0.87      0.87       330
 ```
 
 
@@ -190,7 +190,7 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(basic+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_aug.pkl'    
  
-![alt text](output_256_b_aug/fusion_ablation.png)
+![alt text](3.output_256_b_aug/fusion_training_curves.png)
 
 ```
 === Test 결과 ===
@@ -213,7 +213,7 @@ VIDEO_PKL = 'data/video_features_256.pkl'
 TEXT_PKL  = 'data/text_features_256(증강+동결6+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_feat_hubert_aug.pkl'     
 
-![alt text](output_256_f_aug/fusion_ablation.png)
+![alt text](4.output_256_f_aug/fusion_training_curves.png)
 
 ```
 === Test 결과 ===
@@ -235,18 +235,18 @@ VIDEO_PKL = 'data/video_features_768.pkl'
 TEXT_PKL  = 'data/text_features_768(basic+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_hubert_768.pkl'      
 
-![alt text](output_768_basic/fusion_ablation.png)
 
+![alt text](5.output_768_basic/fusion_training_curves.png)
 
 ```
 === Test 결과 ===
-Accuracy : 0.8879 (88.79%)
-Macro F1 : 0.8879
+Accuracy : 0.8909 (89.09%)
+Macro F1 : 0.8909
 
               precision    recall  f1-score   support
 
  Negative(0)       0.89      0.89      0.89       168
- Positive(1)       0.88      0.89      0.89       162
+ Positive(1)       0.89      0.89      0.89       162
 
     accuracy                           0.89       330
    macro avg       0.89      0.89      0.89       330
@@ -258,7 +258,7 @@ VIDEO_PKL = 'data/video_features_768.pkl'
 TEXT_PKL  = 'data/text_features_768(증강+동결6+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_hubert_768.pkl'    
 
-![alt text](output_768_freeze/fusion_ablation.png)
+
 
 ```
 === Test 결과 ===
@@ -273,5 +273,4 @@ Macro F1 : 0.8542
     accuracy                           0.85       330
    macro avg       0.86      0.85      0.85       330
 weighted avg       0.86      0.85      0.85       330
-
-  ```
+```
