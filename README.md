@@ -258,7 +258,7 @@ VIDEO_PKL = 'data/video_features_768.pkl'
 TEXT_PKL  = 'data/text_features_768(증강+동결6+earlystop).pkl'   
 AUDIO_PKL = 'data/audio_hubert_768.pkl'    
 
-
+![alt text](6.output_768_freeze/fusion_training_curves.png)
 
 ```
 === Test 결과 ===
