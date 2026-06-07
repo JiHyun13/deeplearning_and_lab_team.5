@@ -1,7 +1,7 @@
 # 딥러닝실습 5조 — Multimodal Sentiment Analysis
 
 > CMU-MOSI 데이터셋 감성 분석 (긍정 / 부정)  
-> **Video + Audio + Text** 각 모달리티 256or768-dim 피처 추출 → Cross-Attention Fusion
+> **Video + Audio + Text** 각 모달리티 768-dim 피처 추출 → Cross-Attention Fusion
 
 ---
 
@@ -12,12 +12,12 @@
 ```
 mp4 영상
   ↓  중간 프레임 1장 추출 (cv2)
-  ↓  640×480 리사이즈 → MTCNN 얼굴 탐지 → 224×224 or 768x768 크롭
+  ↓  640×480 리사이즈 → MTCNN 얼굴 탐지 → 224×224 크롭
      (탐지 실패 시 전체 이미지 리사이즈로 fallback)
   ↓  pickle 캐싱 (video_preprocessed.pkl)
   ↓  증강 (train에만 적용)
      - 기하학적: RandomHorizontalFlip / RandomRotation(20°) / RandomResizedCrop
-                 RandomPerspective / RandomAffine(translate+shear)
+                 RandomPerspective(0.2) / RandomAffine(translate+shear=8)
      - 색상: ColorJitter / RandomGrayscale
      - 픽셀: GaussianNoise(std=0.08)
   ↓  GroupShuffleSplit — video_id 기준 화자 단위 분할 (Train/Val/Test 누수 방지)
@@ -25,9 +25,9 @@ DataLoader
   ↓
 VideoEncoder (EfficientNet-B0 or ResNet-18)
   ↓  Linear → BatchNorm → ReLU → Dropout(0.3)
-256or768-dim 피처
+768-dim 피처
   ├─ feature_only=False  → 분류 logit  (단독 학습·평가용)
-  └─ feature_only=True   → 256or768-dim 벡터 (멀티모달 fusion 입력)
+  └─ feature_only=True   → 768-dim 벡터 (멀티모달 fusion 입력)
 ```
 
 ### Part 요약
@@ -42,7 +42,7 @@ VideoEncoder (EfficientNet-B0 or ResNet-18)
 | 6. EarlyStopping | patience=5/8, val_acc 기준 최적 가중치 보존 |
 | 7. 랜덤 서치 | lr × epoch × weight_decay 랜덤 탐색 (val 기준) |
 | 8. 최종 학습 | 최적 config로 재학습 + CosineAnnealingLR + 학습 곡선 저장 |
-| 9. 피처 추출 | 베스트 모델로 전체 데이터 256or768-dim 추출 → `video_features_768.pkl` (feat_dict 포맷) |
+| 9. 피처 추출 | 베스트 모델로 전체 데이터 768-dim 추출 → `video_features_768.pkl` (feat_dict 포맷) |
 
 ### 최종 결과 (화자 단위 split 적용)
 
@@ -72,26 +72,35 @@ VideoEncoder (EfficientNet-B0 or ResNet-18)
 
 ## cross_attention_fusion.ipynb (멀티모달 Fusion)
 
-
-### 모델 구조
+### 모델 구조   
+들어간 피처 크기에 따라 input 크기는 256or768
 
 ```
-Video(768) ─┐  LayerNorm
-Text (256) ─┼─► 각 모달리티가 나머지 두 모달리티에 Cross-Attention
-Audio(256) ─┘
+Video(768) ─┐
+Text (768) ─┼─► 768 → 64 Projection (Linear + LayerNorm)
+Audio(768) ─┘
      │
      ▼
-  v' = CrossAttn(Q=v, KV=[t, a])
-  t' = CrossAttn(Q=t, KV=[v, a])
-  a' = CrossAttn(Q=a, KV=[v, t])
+  v' = CrossAttn(Q=v, KV=[t, a])   ┐
+  t' = CrossAttn(Q=t, KV=[v, a])   ├─ MHA(heads=4) + Residual + LayerNorm + FFN
+  a' = CrossAttn(Q=a, KV=[v, t])   ┘
      │
      ▼
-  concat([v', t', a'])  →  Linear(768→256) → BN → GELU → Dropout
-                        →  Linear(256→64)  → GELU → Dropout
-                        →  Linear(64→2)    → logits
+  concat([v', t', a'])  →  Linear(192→32) → GELU → Dropout(0.5)
+                        →  Linear(32→2)   → logits
 ```
 
-**CrossAttention 블록**: MHA(Multi-Head Attention, heads=4) + Residual + LayerNorm + FFN
+과적합 방지를 위해 proj_dim=64로 경량화   
+
+| 기법 | 설정 | 비고 |
+|------|------|------|
+| 모델 경량화 | `proj_dim=64` (768→64 projection) | ~156K params |
+| Dropout | `0.5` (projection + classifier) | 전체 적용 |
+| Weight Decay | `1e-2` (AdamW L2 정규화) | 강화 |
+| Label Smoothing | `0.1` | CrossEntropyLoss |
+| LR Warmup | LinearLR (5 epoch) → CosineAnnealingLR | 안정적 수렴 |
+| LR | `1e-4` | 낮은 학습률 |
+| EarlyStopping | `patience=10`, val_acc 기준 (higher-is-better) | 최적 가중치 복원 |
 
 ### 노트북 구성
 
@@ -99,32 +108,33 @@ Audio(256) ─┘
 |------|------|
 | 1. 피처 로드 | Video: `feat_dict` 포맷 / Text·Audio: 인덱스 포맷 자동 감지 |
 | 2. 레이블 진단 | 세 모달리티 P/N 분포 비교 + 레이블 일치율 출력 → Ground truth 자동 결정 |
-| 3. 모델 정의 | `TriModalCrossAttnFusion` — 위 구조 |
-| 4. 학습 | AdamW + CosineAnnealingLR + EarlyStopping(patience=10) |
-| 5. 학습 곡선 | Loss / Accuracy 시각화 → `fusion_training_curves.png` |
-| 6. 테스트 평가 | Accuracy / Macro F1 / Classification Report |
-| 7. Confusion Matrix | → `fusion_confusion_matrix.png` |
-| 8. Ablation Study | 모달리티별 제로마스킹으로 기여도 분석 → `fusion_ablation.png` |
-| 9. 오류 샘플 분석 | 틀린 샘플 ID + 트랜스크립트 테이블 + 얼굴 이미지 그리드 + 오디오 재생 |
+| 3. 모델 정의 | `TriModalCrossAttnFusion` — 위 구조 (proj_dim=64, dropout=0.5) |
+| 4. 학습 | AdamW + LR Warmup + CosineAnnealingLR + EarlyStopping(patience=10) |
+| 5. 테스트 성능 평가 | Accuracy / Macro F1 / Classification Report |
+| 6. 학습 곡선 | Loss / Accuracy / F1 시각화 (Train·Val·Test + ES 중단선) → `fusion_training_curves.png` |
+| 7. Confusion Matrix & Ablation | Confusion Matrix + 모달리티별 제로-마스킹 기여도 분석 → `fusion_ablation.png` |
+| 8. 모델 저장 | `cross_attn_fusion_best.pt` |
+| 9. 오류 샘플 분석 | 틀린 샘플 ID + 트랜스크립트 테이블 + 얼굴 이미지 그리드 + 오디오 파형·재생 |
 
 ### 최종 결과
 
 | 지표 | 값 |
 |------|----|
-| Val Accuracy  | **89.70%** |
-| Test Accuracy | **87.58%** |
-| Test Macro F1 | **0.8754** |
+| Val Accuracy  | **88.18%** |
+| Test Accuracy | **86.06%** |
+| Test Macro F1 | **0.8605** |
 
 ### 데이터 파일 배치 (`data/` 폴더)
 
 ```
 data/
-├── video_features_768.pkl             ← video.ipynb 실행 후 생성
-├── text_features_256(basic+earlystop).pkl   ← sooyeon 브랜치에서 복사
-├── audio_features.pkl                 ← jeein 브랜치에서 복사
+├── video_features_768.pkl                      ← video.ipynb 실행 후 생성
+├── text_features_768(basic+earlystop).pkl      ← sooyeon 브랜치에서 복사 / 일반과 증강&동결 버전 있음.
+├── audio_hubert_origin.pkl                        ← jeein 브랜치에서 복사 / 일반과 증강 버전 있움.
 ├── mosi_text_metadata.csv
 ├── video_preprocessed.pkl
-
+├── Audio/WAV_16000/Segmented/                  ← 오디오 재생용
+└── Transcript/Segmented/                       ← .annotprocessed 트랜스크립트
 ```
 
 ---
@@ -139,6 +149,17 @@ Figma 선행연구조사: https://www.figma.com/design/EN7aqVx7fGlpnr40zESsVR/%E
 ---
 
 ## 조합 실험
+
+결과 폴더 구조:
+```
+multimodal/
+├── 1.output_256_basic/
+├── 2.output_256_freeze/
+├── 3.output_256_b_aug/
+├── 4.output_256_f_aug/
+├── 5.output_768_basic/
+└── 6.output_768_freeze/
+```
 
 #### (1) 피처 크기가 256 + text basic (output_256_basic 폴더)
 VIDEO_PKL = 'data/video_features_256.pkl'   
