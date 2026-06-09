@@ -1,0 +1,18 @@
+[Graph: self connect + v<->a]
+Accuracy   : 0.8818
+Precision  : 0.8968
+Recall     : 0.8580
+Specificity: 0.9048
+F1-score   : 0.8770
+Kappa      : 0.7634
+
+[2] 상세 성능 성적표 (Classification Report)
+============================================================
+              precision    recall  f1-score   support
+
+    Negative       0.87      0.90      0.89       168
+    Positive       0.90      0.86      0.88       162
+
+    accuracy                           0.88       330
+   macro avg       0.88      0.88      0.88       330
+weighted avg       0.88      0.88      0.88       330
