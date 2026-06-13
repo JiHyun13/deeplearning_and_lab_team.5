@@ -98,7 +98,7 @@ sooyeon/	     이수연(22010696) — 텍스트 + Self-Attention Fusion
 
 ## sooyeon/ — 텍스트 + Self-Attention Fusion
 
-###BERT/ — BERT 모델 조건별 학습 결과 비교
+### BERT/ — BERT 모델 조건별 학습 결과 비교
 
 | 파일 | 설명 |
 |------|------|
