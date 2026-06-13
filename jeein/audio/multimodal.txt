@@ -1,6 +1,0 @@
-배치에 있는 멀티모달 피쳐를 증강해서 학습
-
-ex) parameter = p
-audio_mix = audio[a] * p +  audio[b] * (1-p)]
-text_mix = text[a] * p  +  text[b] * (1-p)
-label_mix = y[a] * p + y[b] * (1-p)
