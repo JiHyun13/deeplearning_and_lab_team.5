@@ -94,3 +94,39 @@ sooyeon/	    이수연(22010696) — 텍스트 + Self-Attention Fusion
 | `5_256_text_freeze_audio_aug/` | 256-dim 텍스트 동결 + 오디오 증강 |
 | `6_256_text_basic_audio_aug/` | 256-dim 텍스트 기본 + 오디오 증강 |
 | `re_result/` | 최종 재실험 결과 (1~5.png) |
+---
+
+## sooyeon/ — 텍스트 + Self-Attention Fusion
+
+###BERT/ — BERT 모델 조건별 학습 결과 비교
+
+| 파일 | 설명 |
+|------|------|
+| `기본모델+조기종료(256차원).png` | 256-dim 피처, 기본 BERT 모델의 Loss, Accuracy, F1-Score 학습 곡선 (조기 종료 적용) |
+| `기본모델 + 조기종료 (768차원).png` | 768-dim 피처, 기본 BERT 모델의 Loss, Accuracy, F1-Score 학습 곡선 (조기 종료 적용) |
+| `증강 + 동결6 + 조기종료(256).png` | 256-dim 피처, 데이터 증강(Augmentation) 및 하위 6개 레이어 동결(Freeze) 적용 시의 학습 곡선 |
+| `증강 + 동결6 + 조기종료(768).png` | 768-dim 피처, 데이터 증강(Augmentation) 및 하위 6개 레이어 동결(Freeze) 적용 시의 학습 곡선 |
+
+### self_fusion/ — Self-Attention 기반 모달리티 융합 실험 결과
+
+각 폴더에는 모델 학습 및 평가 결과를 분석하기 위한 4개의 시각화 파일이 공통으로 포함되어 있습니다.
+
+### 폴더명 및 조건 설명
+
+| 폴더 | 조건 설명 |
+|------|-----------|
+| `기본+256/` | 256-dim 피처, 기본 학습 (증강 없음) |
+| `기본+756/` | 756-dim 피처, 기본 학습 (증강 없음, ※ 768의 오타로 추정됨) |
+| `256 텍스트만 증강/` | 256-dim 피처, 텍스트 데이터에만 증강 기법 적용 |
+| `256 오디오만 증강/` | 256-dim 피처, 오디오 데이터에만 증강 기법 적용 |
+| `256 오디오, 텍스트 둘다 증강/` | 256-dim 피처, 오디오 및 텍스트 데이터 모두 증강 기법 적용 |
+| `768 증강/` | 768-dim 피처, 데이터 증강 적용 |
+
+### 공통 포함 시각화 파일
+
+| 파일 | 설명 |
+|------|------|
+| `loss.png` | Epoch에 따른 Loss, Accuracy, F1-Score 학습 곡선 및 조기 종료(Early Stopping) 지점 시각화 |
+| `Classification Report.png` | 모델의 긍정/부정(Positive/Negative) 예측 성능을 보여주는 Confusion Matrix |
+| `Attention.png` | 텍스트, 오디오, 비디오 모달리티 간의 Fusion Self-Attention 가중치 히트맵 |
+| `Ablation Study.png` | 단일 모달리티 및 결합 조건에 따른 Test Accuracy 비교 막대 그래프 (Modality Contribution) |
