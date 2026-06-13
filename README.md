@@ -10,6 +10,7 @@ CMU-MOSI 멀티모달 감성 분석 프로젝트의 각 팀원 실험 결과 이
 jihyun/          이지현 (24011917) — 영상 인코더 + Cross-Attention Fusion
 hyunseo/         최현서 (24011834) — 텍스트+오디오 Middle Fusion (MLP)
 jeein/           유지인 (22012137) — 오디오 Graph Fusion
+sooyeon/	    이수연(22010696) — 텍스트 + Self-Attention Fusion
 ```
 
 ---
